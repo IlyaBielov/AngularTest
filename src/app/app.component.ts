@@ -13,18 +13,21 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.get().subscribe(el => {
+    this.service.get().subscribe((el) => {
+      console.log(el);
       this.setIntervalText(el);
     });
   }
 
   getRandomNumber() {
-    return Math.floor(Math.random() * 10);
+    let number = Math.floor(Math.random() * 10 + 1);
+    console.log(number)
+    return number;
   }
 
   setIntervalText(text) {
     setTimeout(() =>{ 
       this.text = text; 
-    }, 3000);
+    }, this.getRandomNumber() * 1000);
   }
 }
