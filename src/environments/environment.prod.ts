@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl: 'https://desolate-mountain-31937.herokuapp.com/'
 };
