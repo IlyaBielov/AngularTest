@@ -1,27 +1,52 @@
-# AngularTest
+# Angular Test — "Купи слона"
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.1.
+The front end of a test task for my first developer job (May 2019). The Angular app asks the
+[Express-Server](https://github.com/IlyaBielov/Express-Server) for a line of text and shows it above an
+elephant after a random delay of 1–10 seconds.
 
-## Development server
+<table>
+  <tr>
+    <th>Waiting for the answer</th>
+    <th>The server's answer</th>
+  </tr>
+  <tr>
+    <td valign="top"><img src="docs/screenshots/waiting.png" width="380" alt="The elephant before the text appears"></td>
+    <td valign="top"><img src="docs/screenshots/answer.png" width="380" alt="The elephant with the text Купи слона"></td>
+  </tr>
+</table>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## How it works
 
-## Code scaffolding
+- `ServiceService.get()` requests the server root as plain text.
+- `AppComponent` waits a random 1–10 seconds and then shows the text.
+- In development, `proxy.conf.json` forwards `/api/*` to the Express server on `http://localhost:3000`,
+  so the browser needs no CORS.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Run it
 
-## Build
+Angular 8 needs **Node 10** (`.nvmrc`). Start the server first:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```bash
+# terminal 1 — the back end
+git clone https://github.com/IlyaBielov/Express-Server && cd Express-Server
+npm install && npm start            # http://localhost:3000
 
-## Running unit tests
+# terminal 2 — this app
+nvm use
+npm ci
+npm start                           # http://localhost:4200
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Other scripts:
 
-## Running end-to-end tests
+| Command | What it does |
+|---|---|
+| `npm run build` | Production build into `dist/AngularTest` |
+| `npm run serve:dist` | Serves the build with `server.js` (Express) on `PORT` or 8080 |
+| `npm test -- --watch=false --browsers=ChromeHeadless` | Unit tests (3) |
+| `npm run lint` | TSLint |
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+The production build also calls `/api/`, so in production the server has to be reachable under that path
+(for example behind the same reverse proxy). It used to run on Heroku, which no longer hosts it.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Made by [Ilya Bielov](https://www.facebook.com/MrBiela).

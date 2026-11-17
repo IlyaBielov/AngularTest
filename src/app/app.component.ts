@@ -19,15 +19,15 @@ export class AppComponent implements OnInit {
     });
   }
 
-  getRandomNumber() {
-    let number = Math.floor(Math.random() * 10 + 1);
-    console.log(number)
-    return number;
+  getRandomNumber(): number {
+    const seconds = Math.floor(Math.random() * 10 + 1);
+    console.log(seconds);
+    return seconds;
   }
 
-  setIntervalText(text) {
-    setTimeout(() =>{ 
-      this.text = text; 
+  setIntervalText(text: string) {
+    setTimeout(() => {
+      this.text = text;
     }, this.getRandomNumber() * 1000);
   }
 }

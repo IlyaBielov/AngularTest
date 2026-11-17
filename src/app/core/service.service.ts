@@ -12,6 +12,7 @@ export class ServiceService {
   constructor(private http: HttpClient) { }
 
   get(): Observable<string> {
-    return this.http.get<string>(this.baseUrl);
+    // The server answers with plain text, not JSON
+    return this.http.get(this.baseUrl, { responseType: 'text' });
   }
 }

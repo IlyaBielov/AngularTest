@@ -1,31 +1,36 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  let http: HttpTestingController;
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
+      imports: [HttpClientTestingModule],
+      declarations: [AppComponent],
+    });
+    http = TestBed.get(HttpTestingController);
+  });
+
+  afterEach(() => http.verify());
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it(`should have as title 'AngularTest'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('AngularTest');
-  });
-
-  it('should render title in a h1 tag', () => {
+  it('should show the server text after a delay of at most 10 seconds', fakeAsync(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to AngularTest!');
-  });
+
+    http.expectOne('/api/').flush('Купи слона');
+    fixture.detectChanges();
+    const text = () => fixture.nativeElement.querySelector('.elephant__block-text p').textContent;
+    expect(text()).toBe('');
+
+    tick(10000);
+    fixture.detectChanges();
+    expect(text()).toBe('Купи слона');
+  }));
 });
